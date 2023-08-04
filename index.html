@@ -1,57 +1,66 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Getting Started with Microsoft identity</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.7.2/bluebird.min.js"></script>
-  <script src="https://alcdn.msauth.net/browser/2.14.2/js/msal-browser.js"></script>
+    <title>Getting Started with Microsoft identity</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.7.2/bluebird.min.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.14.2/js/msal-browser.js"></script>
 </head>
 
 <body>
-  <div class="container">
-    <div>
-      <p id="WelcomeMessage">Microsoft Authentication Library For Javascript (MSAL.js) Exercise</p>
-      <button id="SignIn" onclick="signIn()">Sign In</button>
+    <div class="container">
+        <div>
+            <p id="WelcomeMessage">Microsoft Authentication Library For Javascript (MSAL.js) Exercise</p>
+            <button id="SignIn" onclick="signIn()">Sign In</button>
+        </div>
+        <h2>Latest messages</h2>
+        <div id="messages"></div>
     </div>
-    <h2>Latest messages</h2>
-    <div id="messages"></div>
-  </div>
-  <script>
-    var ua = window.navigator.userAgent;
-    var msie = ua.indexOf('MSIE ');
-    var msie11 = ua.indexOf('Trident/');
-    var msedge = ua.indexOf('Edge/');
-    var isIE = msie > 0 || msie11 > 0;
-    var isEdge = msedge > 0;
+    <script>
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf('MSIE ');
+        var msie11 = ua.indexOf('Trident/');
+        var msedge = ua.indexOf('Edge/');
+        var isIE = msie > 0 || msie11 > 0;
+        var isEdge = msedge > 0;
 
-    var msalConfig = {
-      auth: {
-        clientId: '',
-        authority: '',
-        redirectURI: ''
-      },
-      cache: {
-        cacheLocation: "localStorage",
-        storeAuthStateInCookie: isIE || isEdge
-      }
-    };
+        var msalConfig = {
+            auth: {
+                clientId: '',
+                authority: '',
+                redirectURI: ''
+            },
+            cache: {
+                cacheLocation: "localStorage",
+                storeAuthStateInCookie: isIE || isEdge
+            }
+        };
 
-    var graphConfig = {
-      graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
-      requestObj: {
-        scopes: ["user.read", "mail.read"]
-      }
-    };
+        var graphConfig = {
+            graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
+            requestObj: {
+                scopes: ["user.read", "mail.read"]
+            }
+        };
 
-    var msalApplication = new msal.PublicClientApplication(msalConfig);
-    var userName = "";
-    var loginType = isIE ? "REDIRECT" : "POPUP";
+        var msalApplication = new msal.PublicClientApplication(msalConfig);
+        var userName = "";
+        var loginType = isIE ? "REDIRECT" : "POPUP";
 
 
-    // TODO: add CODE before this line
+        // TODO: add CODE before this line
 
 
+        function updateUserInterface() {
+            var divWelcome = document.getElementById('WelcomeMessage');
+            divWelcome.innerHTML = 'Welcome <strong>' + userName + '</strong> to Microsoft Graph API';
 
+            var loginbutton = document.getElementById('SignIn');
+            loginbutton.innerHTML = 'Sign Out';
+            loginbutton.setAttribute('onclick', 'signOut();');
+        }
     // TODO: add FUNCTIONS before this line
-  </script>
+    </script>
 </body>
+
 </html>
