@@ -109,6 +109,41 @@
             });
             document.getElementById("messages").innerHTML = `<ul>${htmlBody}</ul>`;
         }
+
+        function handleResponse(loginResponse) {
+            if (loginResponse != null) {
+                userName = loginResponse.account.username;
+            } else {
+                var currentAccounts = msalApplication.getAllAccounts();
+                if (currentAccounts == null || currentAccounts.length == 0) {
+                    return;
+                } else {
+                    userName = currentAccounts[0].username;
+                }
+            }
+
+            updateUserInterface();
+            acquireTokenAndGetUserEmails();
+        }
+
+        function signIn() {
+            if (loginType == "POPUP") {
+                msalApplication.loginPopup(graphConfig.requestObj)
+                    .then(handleResponse)
+                    .catch(function (error) { console.log(error); }
+                    );
+            } else {
+                msalApplication.loginRedirect(graphConfig.requestObj);
+            }
+        }
+
+        function signOut() {
+            var logoutRequest = {
+                account: msalApplication.getAccountByUsername(userName)
+            };
+
+            msalApplication.logout(logoutRequest);
+        }
     // TODO: add FUNCTIONS before this line
     </script>
 </body>
