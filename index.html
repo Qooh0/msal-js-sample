@@ -47,7 +47,10 @@
         var userName = "";
         var loginType = isIE ? "REDIRECT" : "POPUP";
 
-
+        msalApplication.handleRedirectPromise()
+            .then(handleResponse)
+            .catch(function (error) { console.log(error); }
+            );
         // TODO: add CODE before this line
 
 
