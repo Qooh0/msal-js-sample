@@ -89,6 +89,26 @@
                     }
                 });
         }
+        function getMessagesFromMSGraph(accessToken, callback) {
+            var endpoint = graphConfig.graphMeEndpoint + "/messages?$top=10&$select=subject";
+
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200)
+                    callback(JSON.parse(this.responseText));
+            }
+            xmlHttp.open("GET", endpoint, true);
+            xmlHttp.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            xmlHttp.send();
+        }
+
+        function graphAPICallback(data) {
+            var htmlBody = '';
+            data.value.forEach(message => {
+                htmlBody += `<li>${message.subject}</li>`;
+            });
+            document.getElementById("messages").innerHTML = `<ul>${htmlBody}</ul>`;
+        }
     // TODO: add FUNCTIONS before this line
     </script>
 </body>
