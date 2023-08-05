@@ -59,6 +59,33 @@
             loginbutton.innerHTML = 'Sign Out';
             loginbutton.setAttribute('onclick', 'signOut();');
         }
+
+        function acquireTokenAndGetUserEmails() {
+            var request = graphConfig.requestObj;
+            request.account = msalApplication.getAccountByUsername(userName);
+
+            msalApplication.acquireTokenSilent(request)
+                .then(function (tokenResponse) {
+                    getMessagesFromMSGraph(tokenResponse.accessToken, graphAPICallback);
+                })
+                .catch(function (error) {
+                    console.log("silent token acquisition fails.");
+                    if (error instanceof msal.InteractionRequiredAuthError) {
+                        if (loginType == "POPUP") {
+                            msalApplication.acquireTokenPopup(request)
+                                .then(function (tokenResponse) {
+                                    getMessagesFromMSGraph(tokenResponse.accessToken, graphAPICallback);
+                                })
+                                .catch(function (error) { console.error(error); }
+                                );
+                        } else {
+                            msalApplication.acquireTokenRedirect(request);
+                        }
+                    } else {
+                        console.error(error);
+                    }
+                });
+        }
     // TODO: add FUNCTIONS before this line
     </script>
 </body>
